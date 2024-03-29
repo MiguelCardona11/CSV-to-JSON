@@ -1,7 +1,6 @@
 import csv
 import json
 import os
-import unidecode
 
 class Archivo:
     def __init__(self, nombreUsuario:str, ruta:str):
