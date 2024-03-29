@@ -25,7 +25,7 @@ class Archivo:
     """
     def validarFormato(self, delimitador):
         if self.validarExistencia():
-            with open(self._ruta, 'r', newline='', encoding='latin-1') as archivo_csv:
+            with open(self._ruta, 'r', newline='', encoding='utf-8') as archivo_csv:
                 lectorCsv = csv.reader(archivo_csv, delimiter=delimitador)
                 for fila in lectorCsv:
                     if len(fila) != 3:
@@ -47,11 +47,11 @@ class Archivo:
         isFile = os.path.isfile(nombreArchivo)
 
         if (not isFile):
-            with open(nombreArchivo, 'w', encoding='latin-1'):
+            with open(nombreArchivo, 'w', encoding='utf-8'):
                 pass
         else:
             os.remove(rutaJson)
-            with open(nombreArchivo, 'w', encoding='latin-1'):
+            with open(nombreArchivo, 'w', encoding='utf-8'):
                 pass
         return rutaJson
     
@@ -59,20 +59,18 @@ class Archivo:
     Después de validar los datos del archivo CSV, se llena un nuevo archivo JSON con estos datos en su nuevo formato
     """
     def formatearJson(self):
-        if self.validarFormato(';'):
+        if self.validarFormato(','):
             archivoJson = self.crearArchivoJson()
             archivoCsv = self._ruta
             
             diccionarioJson = {}
-            with open(archivoCsv, encoding='latin-1') as archivoCsv:
+            with open(archivoCsv, encoding='utf-8') as archivoCsv:
                 datosCsv = csv.DictReader(archivoCsv)
                 diccionarioJson["estudiantes"]=[]
                 
                 for fila_datos in datosCsv:
-                    fila_limpia = {k: unidecode.unidecode(v) for k, v in fila_datos.items()}
-                    diccionarioJson["estudiantes"].append(fila_limpia)
+                    diccionarioJson["estudiantes"].append(fila_datos)
             
-            with open(archivoJson, 'w', encoding='latin-1') as archivoJson:
-                archivoJson.write(json.dumps(diccionarioJson, indent=4))
+            with open(archivoJson, 'w', encoding='utf-8') as archivoJson:
+                archivoJson.write(json.dumps(diccionarioJson, indent=4, ensure_ascii=False))
                 print("Archivo JSON creado satisfactoriamente")
-
