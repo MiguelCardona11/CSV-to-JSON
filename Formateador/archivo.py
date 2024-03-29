@@ -52,6 +52,29 @@ class Archivo:
             os.remove(rutaJson)
             with open(nombreArchivo, 'w') as fp:
                 pass
+        return rutaJson
+    
+    def formatearJson(self):
+        if self.validarFormato(';'):
+            archivoJson = self.crearArchivoJson()
+            archivoCsv = self._ruta
+            
+            diccionarioJson = {}
+            with open(archivoCsv, encoding='latin-1') as archivoCsv:
+                datosCsv = csv.DictReader(archivoCsv)
+                diccionarioJson["estudiantes"]=[]
+                
+                for fila_datos in datosCsv:
+                    print(fila_datos)
+                    diccionarioJson["estudiantes"].append(fila_datos)
+            
+            with open(archivoJson, 'w') as archivoJson:
+                archivoJson.write(json.dumps(diccionarioJson, indent = 4, ensure_ascii=False))
+            
+            
+            
+            
+    
         
         
         
@@ -62,6 +85,6 @@ class Archivo:
 archivo = Archivo('Miguel Cardona', 'C:/datos/archivos/estudiantes.csv')
 # archivo.validarFormato(';')
 
-archivo.crearArchivoJson()
+archivo.formatearJson()
 
 
