@@ -1,6 +1,7 @@
 import csv
 import json
 import os
+import unidecode
 
 class Archivo:
     def __init__(self, nombreUsuario:str, ruta:str):
@@ -54,37 +55,23 @@ class Archivo:
                 pass
         return rutaJson
     
+    """
+    Después de validar los datos del archivo CSV, se llena un nuevo archivo JSON con estos datos en su nuevo formato
+    """
     def formatearJson(self):
         if self.validarFormato(';'):
             archivoJson = self.crearArchivoJson()
             archivoCsv = self._ruta
             
             diccionarioJson = {}
-            with open(archivoCsv, encoding='latin-1') as archivoCsv:
+            with open(archivoCsv) as archivoCsv:
                 datosCsv = csv.DictReader(archivoCsv)
                 diccionarioJson["estudiantes"]=[]
                 
                 for fila_datos in datosCsv:
-                    print(fila_datos)
-                    diccionarioJson["estudiantes"].append(fila_datos)
+                    fila_limpia = {k: unidecode.unidecode(v) for k, v in fila_datos.items()}
+                    diccionarioJson["estudiantes"].append(fila_limpia)
             
             with open(archivoJson, 'w') as archivoJson:
-                archivoJson.write(json.dumps(diccionarioJson, indent = 4, ensure_ascii=False))
-            
-            
-            
-            
-    
-        
-        
-        
-
-
-### ZONA DE PRUEBAS ###
-
-archivo = Archivo('Miguel Cardona', 'C:/datos/archivos/estudiantes.csv')
-# archivo.validarFormato(';')
-
-archivo.formatearJson()
-
+                archivoJson.write(json.dumps(diccionarioJson, indent=4))
 
