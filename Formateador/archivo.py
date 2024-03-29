@@ -34,8 +34,34 @@ class Archivo:
         else:
             print('El archivo indicado no existe, o no se encuentra en formato .csv')
         
+    """
+    Crea un archivo JSON en la misma ruta que el archivo CSV usando el mismo nombre, si el archivo ya existe, lo reemplaza.
+    """
+    def crearArchivoJson(self):
+        carpeta = os.path.dirname(self._ruta)
+        nombre = os.path.splitext(os.path.basename(self._ruta))[0]
+        rutaJson = carpeta+'/'+nombre+'.json'
+        
+        nombreArchivo = rutaJson
+        isFile = os.path.isfile(nombreArchivo)
+
+        if (not isFile):
+            with open(nombreArchivo, 'w') as fp:
+                pass
+        else:
+            os.remove(rutaJson)
+            with open(nombreArchivo, 'w') as fp:
+                pass
+        
+        
+        
+
+
+### ZONA DE PRUEBAS ###
 
 archivo = Archivo('Miguel Cardona', 'C:/datos/archivos/estudiantes.csv')
-archivo.validarFormato(';')
+# archivo.validarFormato(';')
+
+archivo.crearArchivoJson()
 
 
