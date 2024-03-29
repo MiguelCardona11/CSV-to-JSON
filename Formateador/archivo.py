@@ -74,4 +74,5 @@ class Archivo:
             
             with open(archivoJson, 'w') as archivoJson:
                 archivoJson.write(json.dumps(diccionarioJson, indent=4))
+                print("Archivo JSON creado satisfactoriamente")
 
